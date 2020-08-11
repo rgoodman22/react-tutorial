@@ -3,12 +3,20 @@ import ReactDOM from 'react-dom';
 import './index.css';
 
 function Square(props) {
+    const regStyle = {
+        backgroundColor: "#F5B7B1"
+      };
+    const winStyle = {
+        backgroundColor: "#58D68D"
+    };
     return (
-        <button className="square" onClick=
-        {props.onClick}>
+        <button className="square" 
+        onClick={props.onClick}>
             {props.value}
         </button>
     );
+
+    
 }
 
 class Board extends React.Component {
@@ -19,30 +27,26 @@ class Board extends React.Component {
         return (<Square 
                 value = {this.props.squares[i]}
                 onClick={() => this.props.onClick(i)}
+                
             />
         );
     }
 
     render() {
+        let loopRows=[];
+        for (var i = 0; i< 9; i+=3) {
+            let row = []
+                for (var j = 0; j<3; j++){
+                    row.push(this.renderSquare(i+j));
+                }
+            row = <div className="board-row">{row}</div>;
+            loopRows.push(row);
+            }
         return (
-            <div> 
-                <div className="board-row">
-                    {this.renderSquare(0)}
-                    {this.renderSquare(1)}
-                    {this.renderSquare(2)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(3)}
-                    {this.renderSquare(4)}
-                    {this.renderSquare(5)}
-                </div>
-                <div className="board-row">
-                    {this.renderSquare(6)}
-                    {this.renderSquare(7)}
-                    {this.renderSquare(8)}
-                </div>
+            <div>
+                {loopRows}
             </div>
-        );
+        )
     }
 }
 
@@ -56,6 +60,7 @@ class Game extends React.Component {
             stepNumber: 0,
             xIsNext: true,
             positions: new Array(9).fill(null),
+            toggle: false,
         };
     }   
 
@@ -94,13 +99,19 @@ class Game extends React.Component {
         });
     }
 
+    toggle() {
+        this.setState({
+            toggle: !this.state.toggle,
+        });
+    }
+
 
     render() {
 
         let that = this.state;
         const history = this.state.history;
         const current = history[this.state.stepNumber];
-        const winner = calculateWinner(current.squares);
+        const results = calculateWinner(current.squares);
 
         const moves = history.map((step,move) => {
             const desc = move ?
@@ -116,7 +127,9 @@ class Game extends React.Component {
         });
 
         let status;
-        if (winner) {
+        if (results) {
+            const winner = results[0];
+            const line = results[1];
             status = "Winner: " + winner;
         } else {
             status = "Next player: " + (this.state.xIsNext ? "X" : "O");
@@ -132,7 +145,16 @@ class Game extends React.Component {
                 </div>
                 <div className="game-info">
                     <div>{status}</div>
-                    <ol>{moves}</ol>
+                    <ol>
+                        {that.toggle ? moves.reverse(): moves}
+                    </ol>
+                </div>
+                <div className="toggle">
+                    <div>
+                        <button onClick={()=>this.toggle()}>
+                            {that.toggle ? "Reversed" : "Sequential"}
+                        </button>
+                    </div>
                 </div>
             </div>
         );
@@ -155,7 +177,7 @@ function calculateWinner(squares) {
         if (squares[a] && 
             squares[a] === squares[b] &&
             squares[a] === squares[c]) {
-                return squares[a];
+                return [squares[a],lines[i]];
             }
     }
     return null;
