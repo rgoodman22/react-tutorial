@@ -1,3 +1,5 @@
+//Scratchwork
+
 myArr =  new Array(9).fill(false);
 console.log(myArr);
 
