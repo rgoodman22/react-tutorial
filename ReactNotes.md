@@ -208,7 +208,6 @@ A side effect inside code to handle user actions such as **onClick** is fine. Th
 
 ### Put side effects not triggered by user actions inside useEffect()
 
-
 Import **useEffect** from React:
 
 <pre>import React, { useEffect, useState } from 'react';</pre>
@@ -322,3 +321,37 @@ useEffect(() => {
   db.on('value', handleData, error => setErrorText(error.message));
   return () => { db.off('value', handleData); };
 }, []);</pre>
+
+# QuickReact
+
+## 2: Showing a list of courses
+
+Our new **App** creates two component: **Banner** and **CourseList**. It passes the title to the banner and the list of courses to the course list, using HTML attributes.
+
+> Component names must be capitalized, so React can tell them apart from normal HTML such as **div** and **span**.
+
+Component are just functions you define to return JSX. When React sees a component in JSX, it calls the function with the same name. Whatever the function returns replaces the component in the JSX that called it.
+
+[More on functional components](https://courses.cs.northwestern.edu/394/intro-react-notes.php#functional-components).
+
+React collects any attributes attached to a component into a *props* object, and passes that object to the function. The keys of the object are the attributes in the component call, and the values are the attribute values. So 
+
+<pre><Banner title={ schedule.title } /></pre>
+
+means the function **Banner** will be passed the props object `{ "title": "CS Courses for 2018-2019" }`.
+
+> Do not use the attribute **children**.[**props.children** has a special purpose in React.](https://reactjs.org/docs/jsx-in-depth.html#functions-as-children)
+
+We could define **Banner** like this:
+
+<pre>const Banner = props => (
+  <h1>{props.title}</h1>
+)</pre>
+
+But modern JavaScript lets you use *destructuring* syntax to get the values you want from an object. This makes the parameter list explicit about what the function expects to receive.
+
+```
+const Banner = ({ title }) => (
+  <h1>{ title }</h1>
+);
+```
