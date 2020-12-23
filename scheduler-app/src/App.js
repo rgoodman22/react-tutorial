@@ -1,6 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import 'rbx/index.css';
 import { Button, Container, Title } from 'rbx';
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+
+// ------------
+// Firebase
+// ------------
+const firebaseConfig = {
+  apiKey: "AIzaSyBLOfAMt6NTAgF7FdOxxOtpmQLXmEkRPQ4",
+  authDomain: "scheduler-fb.firebaseapp.com",
+  databaseURL: "https://scheduler-fb-default-rtdb.firebaseio.com",
+  projectId: "scheduler-fb",
+  storageBucket: "scheduler-fb.appspot.com",
+  messagingSenderId: "252211528696",
+  appId: "1:252211528696:web:bca6d301d48394f4c60c0d",
+  measurementId: "G-Y239MVXLBY"
+};
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}else {
+  firebase.app(); // if already initialized, use that one
+}
+const db = firebase.database().ref();
+
 
 // -------------
 // MISC
@@ -36,7 +60,7 @@ const addCourseTimes = course => ({
 
 const addScheduleTimes = schedule => ({
   title: schedule.title,
-  courses: schedule.courses.map(addCourseTimes)
+  courses: Object.values(schedule.courses).map(addCourseTimes)
 });
 
 const days = ["M", "Tu", "W", "Th", "F"];
@@ -59,6 +83,19 @@ const courseConflict = (course1,course2) => (
 const hasConflict = (course, selected) => (
   selected.some(selection => courseConflict(course, selection))
 );
+
+const moveCourse = course => {
+  const meets = prompt('Enter new meeting data, in this format:', course.meets);
+  if (!meets) return;
+  const {days} = timeParts(meets);
+  if (days) saveCourse(course, meets); 
+  else moveCourse(course);
+};
+
+const saveCourse = (course, meets) => {
+  db.child('courses').child(course.id).update({meets})
+    .catch(error => alert(error));
+};
 
 // -------------
 //HOOKS
@@ -95,6 +132,7 @@ const TermSelector = ({ state }) => {
 const Course = ({ course, state }) => (
   <Button color ={ buttonColor(state.selected.includes(course)) }
     onClick = { () => state.toggle(course)}
+    onDoubleClick={ () => moveCourse(course) }
     disabled={ hasConflict(course, state.selected) }
     >
     { getCourseTerm(course) } CS { getCourseNumber(course) }: { course.title }
@@ -117,25 +155,25 @@ const CourseList = ({ courses }) => {
   );
 };
 
-
-
 // -------------
 //MAIN
 // -------------
 
 const App = () => {
   const [schedule, setSchedule] = useState({ title: '', courses: [] });
-  const url = 'https://courses.cs.northwestern.edu/394/data/cs-courses.php';
 
   useEffect(() => {
-    const fetchSchedule = async () => {
-      const response = await fetch(url);
-      if (!response.ok) throw response;
-      const json = await response.json();
-      setSchedule(addScheduleTimes(json));
+    const handleData = snap => {
+      if (snap.val()) {
+        const toPrint = addScheduleTimes(snap.val());
+        console.log(toPrint);
+        setSchedule(toPrint);
+      }
+      
     }
-    fetchSchedule();
-  }, [])
+    db.on('value', handleData, error => alert(error));
+    return () => { db.off('value', handleData); };
+  }, []);
 
   return (
     <Container>
