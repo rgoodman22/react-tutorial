@@ -1,0 +1,12 @@
+.board-row:after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
+.status {
+  margin-bottom: 3px;
+}
+.winner {
+  margin-bottom: 10px;
+}
