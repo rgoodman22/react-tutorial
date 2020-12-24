@@ -1,24 +1,19 @@
 import React, {useState} from 'react';
 import './App.css'
 
-const Square = (pos, play) => {
-    const [position, setPosition] = useState(pos);
-    const [player, setPlayer] = useState('');
-    return (
-    <button className="square">
-        { player }
-    </button>
-)};
+
 
 const Board = () => {
+    const [board, setBoard] = useState(Array(9).fill(1))
+    const [turn, setTurn] = useState('X');
+
     const renderSquare = (i) => (
-        <Square position = {i}/>
+        <Square pos = {i} boardState = {{board, setBoard}} turnState = { {turn, setTurn }} />
     );
-    const status = 'Next player: X';
     
     return (
         <div>
-            <div className="status">{status}</div>
+            <div className="status">{}</div>
             <div className="board-row">
                 {renderSquare(0)}
                 {renderSquare(1)}
@@ -38,6 +33,25 @@ const Board = () => {
     )
 
 }
+
+const Square = ({pos, boardState, turnState}) => {
+    const [player, setPlayer] = useState('');
+    
+    return (
+    <button className="square"
+            onClick = { () => {
+                    if (player === '') {
+                        const newBoard = boardState.board.slice();
+                        newBoard[pos] = turnState.turn;
+                        boardState.setBoard(newBoard);
+                        if (turnState.turn === 'X' ? turnState.setTurn('O') : turnState.setTurn('X'));
+                        setPlayer(turnState.turn);
+                    } 
+                }
+            }>
+        { player }
+    </button>
+)};
 
 const App = () => {
     return (
