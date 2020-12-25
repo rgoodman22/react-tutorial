@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Square from '../Square';
 import './Board.css';
+import Restart from '../Restart';
 
 const calculateStatus = (board) => {
     const possibleLines = [
@@ -57,6 +58,9 @@ const Board = () => {
                 {renderSquare(6)}
                 {renderSquare(7)}
                 {renderSquare(8)}
+            </div>
+            <div>
+                <Restart setBoard = {setBoard} setTurn = {setTurn} />
             </div>
         </div>
     )

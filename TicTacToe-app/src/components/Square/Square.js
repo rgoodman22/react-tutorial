@@ -1,9 +1,9 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './Square.css';
 
 
 const Square = ({pos, boardState, turnState, status}) => {
-    const [player, setPlayer] = useState('');
+    const player = boardState.board[pos];
     
     return (
     <button className="square"
@@ -15,7 +15,6 @@ const Square = ({pos, boardState, turnState, status}) => {
                         newBoard[pos] = turnState.turn;
                         boardState.setBoard(newBoard);
                         if (turnState.turn === 'X' ? turnState.setTurn('O') : turnState.setTurn('X'));
-                        setPlayer(turnState.turn);
                     }
                 }
             }>
