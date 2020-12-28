@@ -4,7 +4,7 @@ import './Restart.css';
 const Restart = ({setHistory, setTurn}) => {
     return (
         <button className="restart" onClick={ ()=> {
-            setHistory([{board: Array(9).fill(''), turn: 'X'}]);
+            setHistory([{board: Array(9).fill(''), turn: 'X', pos: undefined}]);
             setTurn('X');}
         }>
         Play again

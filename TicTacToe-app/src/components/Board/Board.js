@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Square from '../Square';
 import './Board.css';
 import Restart from '../Restart';
@@ -20,12 +20,12 @@ const calculateStatus = (board) => {
     const isFull = board.find(square => square === '');
     if (winner === undefined) {
         if (isFull !== undefined) {
-            return 'Game is incomplete';
+            return {status: 'Game is incomplete', squares: winner};
         } else {
-            return 'Game is a draw';
+            return {status: 'Game is a draw', squares: winner};
         }
     } else {
-        return 'Winner: ' + board[winner[0]];
+        return {status: 'Winner: ' + board[winner[0]], squares: winner};
     }
 }
 
@@ -34,11 +34,15 @@ const calculateStatus = (board) => {
 const Board = ({ turnState, history, setHistory}) => {
     //const board = boardState.board; const setBoard = boardState.setBoard;
     const turn = turnState.turn; const setTurn = turnState.setTurn;
-    const status = calculateStatus(history[history.length-1].board);
+    const totStatus = calculateStatus(history[history.length-1].board);
+    const status = totStatus.status;
+    const squares = totStatus.squares
 
     const renderSquare = (i) => {
+        const winClass = (squares !== undefined && squares.includes(i) ? "winning" : "");
         return (
-        <Square pos = {i} 
+        <Square winClass = {winClass}
+                pos = {i} 
                 //boardState = {{board, setBoard}} 
                 turnState = { {turn, setTurn }} 
                 status = {status}

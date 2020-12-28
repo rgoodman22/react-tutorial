@@ -1,10 +1,10 @@
 import React from 'react';
 
 const MoveList = ({history, setHistory, setTurn}) => {
-    const string = "str";
     const moves = history.slice(1).map((element, index)=> {
+        const label = element.turn + ": " + element.pos;
         return (
-            <li>
+            <li key = {index}>
                 <button onClick = { () => {
                     const newHistory = history.slice(0, index+1);
                     setHistory(newHistory);
@@ -13,7 +13,7 @@ const MoveList = ({history, setHistory, setTurn}) => {
                     } else if (newHistory[newHistory.length-1].turn === 'X' ? setTurn('O') : setTurn('X')); 
                     ;
                 }}>
-                    {index === history.length-2 ? <b>{string}</b> : string}
+                    {index === history.length-2 ? <b>{label}</b> : label}
                 </button>
             </li>
             );

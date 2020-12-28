@@ -21,3 +21,7 @@
 .kbd-navigation .square:focus {
   background: #ddd;
 }
+
+.winning{
+  background: green;
+}
