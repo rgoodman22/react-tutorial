@@ -1,10 +1,10 @@
 import React from 'react';
 import './Restart.css';
 
-const Restart = ({setBoard, setTurn}) => {
+const Restart = ({setHistory, setTurn}) => {
     return (
         <button className="restart" onClick={ ()=> {
-            setBoard(Array(9).fill(''));
+            setHistory([{board: Array(9).fill(''), turn: 'X'}]);
             setTurn('X');}
         }>
         Play again

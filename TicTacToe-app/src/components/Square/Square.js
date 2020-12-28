@@ -2,8 +2,9 @@ import React from 'react';
 import './Square.css';
 
 
-const Square = ({pos, boardState, turnState, status}) => {
-    const player = boardState.board[pos];
+const Square = ({pos, turnState, history, setHistory, status}) => {
+    const board = history[history.length-1].board
+    const player = board[pos];
     
     return (
     <button className="square"
@@ -11,9 +12,9 @@ const Square = ({pos, boardState, turnState, status}) => {
                 if (player !== '' || status === "Game is a draw" || status.substring(0,6) === "Winner") {
                     return
                 } else{
-                        const newBoard = boardState.board.slice();
+                        const newBoard = board.slice();
                         newBoard[pos] = turnState.turn;
-                        boardState.setBoard(newBoard);
+                        setHistory(history.concat({board: newBoard, turn: turnState.turn}));
                         if (turnState.turn === 'X' ? turnState.setTurn('O') : turnState.setTurn('X'));
                     }
                 }

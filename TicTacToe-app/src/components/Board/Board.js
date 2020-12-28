@@ -31,14 +31,19 @@ const calculateStatus = (board) => {
 
 
 
-const Board = () => {
-    const [board, setBoard] = useState(Array(9).fill(''))
-    const [turn, setTurn] = useState('X');
-    const status = calculateStatus(board);
+const Board = ({ turnState, history, setHistory}) => {
+    //const board = boardState.board; const setBoard = boardState.setBoard;
+    const turn = turnState.turn; const setTurn = turnState.setTurn;
+    const status = calculateStatus(history[history.length-1].board);
 
     const renderSquare = (i) => {
         return (
-        <Square pos = {i} boardState = {{board, setBoard}} turnState = { {turn, setTurn }} status = {status}/>  
+        <Square pos = {i} 
+                //boardState = {{board, setBoard}} 
+                turnState = { {turn, setTurn }} 
+                status = {status}
+                history = {history}
+                setHistory = {setHistory}/>  
     )};
     
     return (
@@ -60,7 +65,7 @@ const Board = () => {
                 {renderSquare(8)}
             </div>
             <div>
-                <Restart setBoard = {setBoard} setTurn = {setTurn} />
+                <Restart setHistory = {setHistory} setTurn = {setTurn} />
             </div>
         </div>
     )

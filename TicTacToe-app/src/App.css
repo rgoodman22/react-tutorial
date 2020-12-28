@@ -6,21 +6,25 @@ body {
 ol, ul {
   padding-left: 30px;
 }
-  
-  
-  /* .game {
-    display: flex;
-    flex-direction: row;
-  }
-  
-  .game-info {
-    margin-left: 20px;
-  }
 
-  .toggle {
-    margin-left: 270px;
-    position: fixed;
-  } */
+li {
+  margin-top: 4px;
+}
+  
+  
+.game {
+  display: flex;
+  flex-direction: row;
+}
+
+.game-info {
+  margin-left: 20px;
+}
+
+.toggle {
+  margin-left: 270px;
+  position: fixed;
+}
 
   
   
