@@ -1,4 +1,6 @@
+import { Typography } from '@material-ui/core';
 import React, { useEffect, useState } from 'react';
+import ProductGrid from './components/ProductGrid';
 
 const App = () => {
   const [data, setData] = useState({});
@@ -13,9 +15,9 @@ const App = () => {
   }, []);
 
   return (
-    <ul>
-      {products.map(product => <li key={product.sku}>{product.title}</li>)}
-    </ul>
+    <Typography component="div" style={{ backgroundColor: '#778899', paddingTop: '30px'}}>
+      <ProductGrid products = {products} />
+    </Typography>
   );
 };
 
