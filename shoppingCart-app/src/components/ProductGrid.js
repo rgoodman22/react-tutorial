@@ -1,36 +1,24 @@
 import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import ProductTile from './ProductTile';
 import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-    },
-    paper: {
-      height: 400,
-      width: 200,
-    },
-    control: {
-      padding: theme.spacing(2),
-    },
-  }));
+  root: {
+    alignItems: "center"
+  }
+}));
 
 
 const ProductGrid = ({products}) => {
     const classes = useStyles();
-
     return (
         <Container maxWidth="md">
-          <Grid container justify="center" spacing={4}>
-          {products.map((value) => (
-              <Grid key={value} item>
-                  <Paper className={classes.paper}>
-                      {value.title}
-                  </Paper>
-              </Grid>
-          ))}
+          <Grid container justify="center" spacing={3} className={classes.root}>
+            {products.map((product) => 
+              <ProductTile key = {product.sku} product = { product }/>
+            )}
           </Grid>
       </Container>
     );
