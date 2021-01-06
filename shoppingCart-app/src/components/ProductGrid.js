@@ -6,7 +6,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    alignItems: "center"
+    alignItems: "center",
   }
 }));
 
@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 const ProductGrid = ({products}) => {
     const classes = useStyles();
     return (
-        <Container maxWidth="md">
+        <Container maxWidth="lg">
           <Grid container justify="center" spacing={3} className={classes.root}>
             {products.map((product) => 
               <ProductTile key = {product.sku} product = { product }/>

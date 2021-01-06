@@ -15,9 +15,12 @@ const App = () => {
   }, []);
 
   return (
-    <Typography component="div" style={{ backgroundColor: '#778899', paddingTop: '30px'}}>
-      <ProductGrid products = {products} />
-    </Typography>
+    <React.Fragment>
+      <Typography component="div" style={{ backgroundColor: '#778899', paddingTop: '30px'}}>
+        <ProductGrid products = {products} />
+      </Typography>
+    </React.Fragment>
+    
   );
 };
 
